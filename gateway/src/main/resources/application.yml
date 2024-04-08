@@ -1,0 +1,28 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: gateway
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: gateway
+            client-secret: ngxJ8pz7T91FXoNNRJOVvmqQ5dd9WQvZ
+            scope: openid, profile, email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/diegojacober
+
+  cloud:
+    gateway:
+      routes:
+        - id: hello-api
+          uri: http://localhost:8081
+          predicates:
+            - Path=/hello/**
+          filters:
+            # - RemoveRequestHeader=Cookie
+            - TokenRelay= #passa o token para outros serviços, Token Access Pattern
